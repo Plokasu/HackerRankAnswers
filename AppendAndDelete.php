@@ -1,3 +1,4 @@
+// https://www.hackerrank.com/challenges/append-and-delete/problem
 function appendAndDelete($s, $t, $k) 
 {
     $sLength = strlen($s);
