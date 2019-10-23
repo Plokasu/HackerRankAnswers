@@ -1,3 +1,4 @@
+// https://www.hackerrank.com/challenges/sock-merchant/problem
 function sockMerchant($n, $ar) {
     $sockTypeNumbers = [];
     $totalPairs = 0;
