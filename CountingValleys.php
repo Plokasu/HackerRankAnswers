@@ -1,3 +1,4 @@
+// https://www.hackerrank.com/challenges/counting-valleys/problem
 // Complete the countingValleys function below.
 function countingValleys($n, $s) {
     $terrain = [
