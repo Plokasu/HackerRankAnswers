@@ -1,3 +1,4 @@
+// https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
 // Complete the jumpingOnClouds function below.
 function jumpingOnClouds($c) {
     $position = 0;
