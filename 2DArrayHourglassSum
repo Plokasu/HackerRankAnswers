@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/2d-array/problem
 // Complete the hourglassSum function below.
 function hourglassSum($arr) {
-    $maxHourglass = null;
+    $maxHourglass = -63;
     for($j = 1; $j < 5; $j++) {
         for($i = 1; $i < 5; $i++) {
             $sum = $arr[$j][$i];
@@ -9,9 +9,7 @@ function hourglassSum($arr) {
                 $sum += $arr[$j-1][$k] + $arr[$j+1][$k];
             }
 
-            if($maxHourglass === null) {
-                $maxHourglass = $sum;
-            }else if($sum > $maxHourglass) {
+            if($sum > $maxHourglass) {
                 $maxHourglass = $sum;
             }
         }
