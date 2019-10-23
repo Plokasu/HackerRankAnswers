@@ -4,9 +4,8 @@ function jumpingOnClouds($c) {
     $jumps = 0;
     
     do {
-        if(isset($c[$position + 2]) && $c[$position + 2] == 0) {
-            $position += 2;
-        }else if(isset($c[$position + 1]) && $c[$position + 1] == 0) {
+        $position++;
+        if(isset($c[$position + 1]) && $c[$position + 1] == 0) {
             $position++;
         }
         $jumps++;
