@@ -1,0 +1,14 @@
+// https://www.hackerrank.com/challenges/ctci-ransom-note/
+// Complete the checkMagazine function below.
+function checkMagazine($magazine, $note) {
+    $magazineLetters = array_count_values($magazine);
+    $noteLetters = array_count_values($note);
+
+    foreach($noteLetters as $letter => $letterQuantity) {
+        if(!isset($magazineLetters[$letter]) || $magazineLetters[$letter] < $letterQuantity) {
+            Print("No"); 
+            return;
+        }
+    }
+    Print("Yes");
+}
