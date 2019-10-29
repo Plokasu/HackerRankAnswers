@@ -1,24 +1,29 @@
 // https://www.hackerrank.com/challenges/crush/problem
-// Some test cases fail, it seems to be because of Php 32 bit int size, probably.
-
+// Complete the arrayManipulation function below.
 function arrayManipulation($n, $queries) {
-    $array = array_fill (1 , $n, 0);
+    $array = [];
     
     for($i = 0; $i < count($queries); $i++) {
-        $array[$queries[$i][0]] += $queries[$i][2];
-        if($queries[$i][1] + 1 <= count($array)) {
-            $array[$queries[$i][1] + 1] -= $queries[$i][2];
+        if(!isset($array[$queries[$i][0]])) {
+            $array[$queries[$i][0]] = 0;
         }
-    }
-    
-    $max = 0;
-    $total = 0;
 
-    for($i = 1; $i <= count($array); $i++) {
-        $total += $array[$i];
-        if($total > $max) {
-            $max = $total;
+        if(!isset($array[$queries[$i][1] + 1])) {
+            $array[$queries[$i][1] + 1] = 0;
         }
+
+        $array[$queries[$i][0]] += $queries[$i][2];
+        $array[$queries[$i][1] + 1] -= $queries[$i][2];
+    }
+
+    ksort($array);
+
+    $total = 0;
+    $max = 0;
+
+    foreach ($array as $value) {
+        $total += $value;
+        $max = max($max, $total);
     }
 
     return $max;
