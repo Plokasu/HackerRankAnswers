@@ -9,16 +9,18 @@ class Node {
     }
 };
 
-class Queue {
-    protected $tail;
-    public $count, $counter, $head;
+class MedianQueue {
+    protected $tail, $medianIndex, $isEven;
+    public $count, $countingSort, $head;
 
-    function __construct() 
+    function __construct($d) 
     {
+        $this->medianIndex = (int) ($d / 2);
+        $this->isEven = $d % 2 === 0;
         $this->head = null;
         $this->tail = null;
         $this->count = 0;
-        $this->counter = array_fill (0, 201 , 0);;
+        $this->countingSort = [];
     }
 
     public function push($value) 
@@ -32,16 +34,21 @@ class Queue {
             $this->tail->next = $node;
             $this->tail = $node;
         }
+
+        if(!isset($this->countingSort[$value])) {
+            $this->countingSort[$value] = 0;
+        }
+
+        $this->countingSort[$value]++;
         $this->count++;
-        $this->counter[$value]++;
     }
 
     public function pop() 
     {
         if($this->head !== null) {
-            $this->counter[$this->head->value]--;
+            $this->countingSort[$this->head->value]--;
             $this->head = $this->head->next;
-            $this->count--;
+            $this->count--;   
         }
     }
 
@@ -54,53 +61,42 @@ class Queue {
         }while($temp !== null);
         echo "\n";
     }
-};
 
-function calculateMedian($queue, $medianIndex, $isEven) 
-{
-    $sum = -1;
-    $firstNumber = null;
-    $auxCountArray = array_merge($queue->counter, []);
+    public function medianTimesTwo() 
+    {
+        $currentIndex = -1;
+        $firstNumber = null;
 
-    for($i = 1; $i <= 200; $i++) {
-        $auxCountArray[$i] += $auxCountArray[$i - 1];
-    }
-    
-    $temp = $queue->head;
-    $firstNumber = null;
-
-    do{
-        if($isEven) {
-            if($auxCountArray[$temp->value] == $medianIndex) {
-                $firstNumber = $temp->value;
-            }else if($auxCountArray[$temp->value] == ($medianIndex + 1)) {
-                return ($firstNumber + $temp->value)/2;
-            }
-        }else{
-            if($auxCountArray[$temp->value] == $medianIndex) {
-                return $temp->value;
+        foreach($this->countingSort as $number => $frequency) {
+            $currentIndex += $frequency;
+            if($this->isEven) {
+                if($currentIndex >= $this->medianIndex && $firstNumber === null) {
+                    return $number * 2;
+                }else if($currentIndex == $this->medianIndex - 1) {
+                    $firstNumber = $number;
+                }else if($currentIndex >= $this->medianIndex) {
+                    return $firstNumber + $number;
+                }
+            } else {
+                if($currentIndex >= $this->medianIndex) {
+                    return $number * 2;
+                }
             }
         }
+        
+    }
+};
 
-        $auxCountArray[$temp->value]--;
-        $temp = $temp->next;
-    } while($temp != null);
-}
+
 
 function activityNotifications($expenditure, $d) {
     $notifications = 0;
-    $queue = new Queue();
-    $isEven = $d%2 === 0;
-
-    $medianIndex = (int)($d/2) + ($isEven ? 0 : 1); 
-    
+    $queue = new MedianQueue($d);
     $length = count($expenditure);
 
     for($i = 0; $i < $length; $i++) {
         if($queue->count === $d) {
-            $queue->print();
-            var_dump(calculateMedian($queue, $medianIndex, $isEven));
-            if($expenditure[$i] >= 2 * calculateMedian($queue, $medianIndex, $isEven)) {
+            if($expenditure[$i] >= $queue->medianTimesTwo()) {
                 $notifications++;
             }
             $queue->pop();
