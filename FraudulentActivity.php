@@ -1,5 +1,4 @@
-<?php
-
+// https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem
 // Complete the activityNotifications function below.
 
 class Node {
@@ -20,7 +19,7 @@ class MedianQueue {
         $this->head = null;
         $this->tail = null;
         $this->count = 0;
-        $this->countingSort = [];
+        $this->countingSort = array_fill(0, 201, 0);
     }
 
     public function push($value) 
@@ -70,12 +69,14 @@ class MedianQueue {
         foreach($this->countingSort as $number => $frequency) {
             $currentIndex += $frequency;
             if($this->isEven) {
-                if($currentIndex >= $this->medianIndex && $firstNumber === null) {
-                    return $number * 2;
-                }else if($currentIndex == $this->medianIndex - 1) {
+                if($currentIndex >= $this->medianIndex) {
+                    if($firstNumber === null) {
+                        return $number * 2;
+                    } else {
+                        return $firstNumber + $number;
+                    }
+                } else if($currentIndex == $this->medianIndex - 1 && $firstNumber === null) {
                     $firstNumber = $number;
-                }else if($currentIndex >= $this->medianIndex) {
-                    return $firstNumber + $number;
                 }
             } else {
                 if($currentIndex >= $this->medianIndex) {
@@ -96,7 +97,9 @@ function activityNotifications($expenditure, $d) {
 
     for($i = 0; $i < $length; $i++) {
         if($queue->count === $d) {
-            if($expenditure[$i] >= $queue->medianTimesTwo()) {
+            $median = $queue->medianTimesTwo();
+            var_dump($expenditure[$i]." >= ".$median);
+            if($expenditure[$i] >= $median) {
                 $notifications++;
             }
             $queue->pop();
@@ -105,25 +108,3 @@ function activityNotifications($expenditure, $d) {
     }
     return $notifications;
 }
-
-$fptr = fopen(getenv("OUTPUT_PATH"), "w");
-
-$stdin = fopen("php://stdin", "r");
-
-fscanf($stdin, "%[^\n]", $nd_temp);
-$nd = explode(' ', $nd_temp);
-
-$n = intval($nd[0]);
-
-$d = intval($nd[1]);
-
-fscanf($stdin, "%[^\n]", $expenditure_temp);
-
-$expenditure = array_map('intval', preg_split('/ /', $expenditure_temp, -1, PREG_SPLIT_NO_EMPTY));
-
-$result = activityNotifications($expenditure, $d);
-
-fwrite($fptr, $result . "\n");
-
-fclose($stdin);
-fclose($fptr);
