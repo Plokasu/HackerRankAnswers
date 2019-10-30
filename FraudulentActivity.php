@@ -34,10 +34,6 @@ class MedianQueue {
             $this->tail = $node;
         }
 
-        if(!isset($this->countingSort[$value])) {
-            $this->countingSort[$value] = 0;
-        }
-
         $this->countingSort[$value]++;
         $this->count++;
     }
@@ -49,16 +45,6 @@ class MedianQueue {
             $this->head = $this->head->next;
             $this->count--;   
         }
-    }
-
-    public function print() 
-    {
-        $temp = $this->head;
-        do {
-            echo $temp->value." ";
-            $temp = $temp->next;
-        }while($temp !== null);
-        echo "\n";
     }
 
     public function medianTimesTwo() 
