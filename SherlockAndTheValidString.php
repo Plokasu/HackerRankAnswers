@@ -21,11 +21,9 @@ function isValid($s) {
 
    $keys = array_keys($frequencyCount);
 
-   if( 
-       ($keys[0] == 1 && $frequencyCount[$keys[0]] == 1) ||
-       ($keys[1] == 1 && $frequencyCount[$keys[1]] == 1) ||
-       ($keys[1] == $keys[0] -1 &&  $frequencyCount[$keys[0]] == 1) ||
-       ($keys[0] == $keys[1] -1 &&  $frequencyCount[$keys[1]] == 1)
+   if(
+       (($keys[1] == $keys[0] -1 || $keys[0] == 1) &&  $frequencyCount[$keys[0]] == 1) ||
+       (($keys[0] == $keys[1] -1 || $keys[1] == 1) &&  $frequencyCount[$keys[1]] == 1)
      ) {
        return "YES";
    }
